@@ -10,5 +10,3 @@ mongoose.connection.on('error', (err) => {
   console.log('MongoDB connection error. Please make sure MongoDB is running.');
   process.exit();
 });
-
-export default mongodbConfig;

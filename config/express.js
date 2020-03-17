@@ -1,3 +1,7 @@
+const express = require('express');
+app = express();
+const session = require('express-session');
+const exphbs = require("express-handlebars");
 const expressStatusMonitor = require('express-status-monitor');
 const bodyParser = require('body-parser');
 const flash = require('express-flash');
@@ -5,13 +9,18 @@ const compression = require('compression');
 const logger = require('morgan');
 const lusca = require('lusca');
 const MongoStore = require('connect-mongo')(session);
-const session = require('express-session');
 const path = require('path');
 const passport = require('passport');
 const sass = require('node-sass-middleware');
 
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+    helpers: {
+        // helpers
+    }
+  });
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../views'));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.use(expressStatusMonitor());
@@ -42,7 +51,7 @@ app.disable('x-powered-by');
 app.use((req, res, next) => {
   res.locals.user = req.user;
   lusca.csrf()(req, res, next);
-  next();
+  // next();
 });
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
@@ -60,4 +69,4 @@ app.use((req, res, next) => {
 });
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
-export default expressConfig;
+module.exports = app;

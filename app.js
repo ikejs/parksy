@@ -1,15 +1,9 @@
-const express = require('express');
-const sass = require('node-sass-middleware');
-
 // import config files
-import './config/dotenv';
-import './config/errorHandler';
-import './config/express';
-import './config/handlebars';
-import './config/mongodb';
-import './config/passport';
-import './config/routes';
+require('./config/dotenv');
+require('./config/mongodb');
+require('./config/express');
+require('./config/errorHandler');
+require('./config/routes');
 
 
-const app = express();
-
+app.listen(process.env.PORT || 5000);

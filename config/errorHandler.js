@@ -9,6 +9,3 @@ if (process.env.NODE_ENV === 'development') {
         res.status(500).send('Server Error');
     });
 }
-
-
-export default errorHandlerConfig;

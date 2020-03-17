@@ -1,10 +1,8 @@
-const passportConfig = require('./config/passport');
+const passportConfig = require('./passport');
 
 // controllers
-const homeController = require('./controllers/index');
+const indexController = require('../controllers/index');
 
 
 app.get('/', indexController.index);
-
-
-export default routesConfig
+app.get('/account', passportConfig.isAuthenticated, indexController.index);
