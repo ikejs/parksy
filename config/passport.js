@@ -1,10 +1,6 @@
 const passport = require('passport');
 const refresh = require('passport-oauth2-refresh');
-const axios = require('axios');
 const { Strategy: LocalStrategy } = require('passport-local');
-const { Strategy: GitHubStrategy } = require('passport-github');
-const { OAuthStrategy } = require('passport-oauth');
-const { OAuth2Strategy } = require('passport-oauth');
 const _ = require('lodash');
 const moment = require('moment');
 

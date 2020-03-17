@@ -1,0 +1,41 @@
+<input style="display: none;" class="hidden" id="_csrf" value="{{_csrf}}" />
+<input style="display: none;" class="hidden" id="newUserId" />
+
+
+<form id="phoneSignup">
+    <label for="firstName">Phone: 
+        <input type="tel" id="phone" />
+    </label>
+    <input type="submit" />
+</form>
+
+
+<form class="hidden" id="checkCode">
+    <label for="code">Code: 
+        <input type="number" id="code" />
+    </label>
+    <input type="submit" />
+</form>
+
+<hr>
+
+<form class="hidden" id="finishSignup">
+    <label for="firstName">First Name: 
+        <input name="firstName"  />
+    </label><br>
+    <label for="lastName">Last Name: 
+        <input name="lastName"  />
+    </label><br>
+    <label for="email">Email: 
+        <input type="email" name="email"  />
+    </label><br>
+    <label for="password">Password: 
+        <input type="password" name="password" autocomplete="current-password" />
+    </label><br>
+    <label for="confirmPassword">Confirm Password: 
+        <input type="confirmPassword" name="confirmPassword"  />
+    </label><br>
+    <input type="submit" />
+</form>
+
+<script src="../javascripts/signup.js"></script>
