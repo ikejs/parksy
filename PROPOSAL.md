@@ -26,15 +26,15 @@ One challenge I anticipate while developing Parksy is allowing a renter to offer
 
 ## Skateboard
 
-A working authentication system, mock accounts and parking space data.
+Mock parking space data, basic UI for renter CRUD, ability to rent a space anywhere with only license plate, location, and duration.
 
 ## Bike
 
-Basic UI for CRUDing parking space data from a renter's perspective, implement Stripe, make parking space sale. 
+Implement Stripe, clean UI.
 
 ## Car
 
-Clean UI for sorting parking spaces by location.
+UI for sorting parking spaces by location.
 
 ## Personal Achievement Goals:
 
