@@ -1,9 +1,11 @@
 const User = require('../models/User');
 
 
+
 exports.getSignup = (req, res) => {
     res.render('account/signup');
 }
+
 
 exports.postPhoneSignup = (req, res, next) => {
     const phoneVerificationToken = Math.floor(1000 + Math.random() * 9000);
@@ -23,13 +25,13 @@ exports.postPhoneSignup = (req, res, next) => {
             if (err) {
                 return res.send({ err })
             } else {
-                twilio.messages.create({
-                    body: `Your Parksy verification code is: ${phoneVerificationToken}`,
-                    from: process.env.TWILIO_NUMBER,
-                    to: user.phone.number
-                }).then(() => {
+                // twilio.messages.create({
+                //     body: `Your Parksy verification code is: ${phoneVerificationToken}`,
+                //     from: process.env.TWILIO_NUMBER,
+                //     to: user.phone.number
+                // }).then(() => {
                     res.send(user._id);
-                });
+                // });
                 sleep(timeToVerify).then(() => {
                     if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
                     if(!user.phoneVerified) {
@@ -40,6 +42,7 @@ exports.postPhoneSignup = (req, res, next) => {
         });
     });
 }
+
 
 exports.postCheckCode = (req, res) => {
     User
@@ -71,15 +74,14 @@ exports.postCheckCode = (req, res) => {
     });
 }
 
-exports.postSignup = (req, res) => {
-    const errors = [];
-    if (!validator.isEmail(req.body.email)) validationErrors.push('Please enter a valid email address.');
-    if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push('Password must be at least 8 characters long');
-    if (req.body.password !== req.body.confirmPassword) validationErrors.push('Passwords do not match');
 
-    if (validationErrors.length) {
-        res.send({ errors })
-        return res.redirect('/signup');
+exports.postSignup = (req, res, next) => {
+    const errors = [];
+    if (!validator.isEmail(req.body.email)) errors.push('Please enter a valid email address.');
+    if (!validator.isLength(req.body.password, { min: 8 })) errors.push('Password must be at least 8 characters long');
+
+    if (errors.length) {
+        return res.send({ errors })
     }
 
     req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
@@ -87,18 +89,25 @@ exports.postSignup = (req, res) => {
     User.findOne({ email: req.body.email }, (err, existingUser) => {
         if (err) { return next(err); }
         if (existingUser) {
-            res.send({ errors: ["Account with that email address already exists."] })
-            return res.redirect('/signup');
+            return res.send({ errors: ["Account with that email address already exists."] })
         }
-        user.save((err) => {
-            if (err) {
-                return next(err); 
-            }
-            req.logIn(user, (err) => {
-                if (err) {
-                    return next(err);
-                }
-                res.redirect('/');
+        // hash password
+        bcrypt.genSalt(10, (err, salt) => {
+            if (err) { return next(err); }
+            bcrypt.hash(req.body.password, salt, (err, password) => {
+                if (err) { return next(err); }
+                // finish user object
+                const { firstName, lastName, email } = req.body;
+                User.updateOne({ _id: req.body.userID }, {
+                    $set: {
+                        firstName,
+                        lastName,
+                        email,
+                        password
+                    }
+                });
+                res.send('login');
+                // sendConfirmationEmail(req.body.userID);
             });
         });
     });

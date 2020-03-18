@@ -1,6 +1,7 @@
 // import node modules
 dotenv = require('dotenv').config({ path: '.env' });;
 mongoose = require('mongoose');
+bcrypt = require('bcrypt');
 express = require('express');
 session = require('express-session');
 exphbs = require("express-handlebars");
@@ -18,6 +19,7 @@ errorHandler = require('errorhandler');
 passportConfig = require('./config/passport');
 twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 validatePhone = require('phone');
+validator = require('validator');
 
 // for cleanup tasks
 sleep = (ms) => {

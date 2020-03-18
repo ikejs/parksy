@@ -36,20 +36,23 @@ $("#checkCode").submit((e) => {
 
 $("#finishSignup").submit((e) => {
     e.preventDefault();
+    if($('#password').val() !== $('#confirmPassword').val()) { // check if passwords match
+        return alert("Passwords do not match");
+    }
     axios.post('/signup', {
         _csrf: $("#_csrf").val(),
         userID: $("#newUserId").val(),
         firstName: $("#firstName").val(),
         lastName: $("#lastName").val(),
-        email: $("#email").val()
+        email: $("#email").val(),
+        password: $('#password').val()
     }).then(res => {
         if(res.data.errors) {
             return res.data.errors.map(error => {
                 alert(error);
             });
+        } else if(res.data === "login") {
+            window.location.href = "/login";
         }
-        console.log(res);
-        $("#checkCode").addClass('hidden');
-        $("#finishSignup").removeClass('hidden');
     });
 });

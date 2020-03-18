@@ -1,14 +1,11 @@
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const mongoose = require('mongoose');
-
 const userSchema = new mongoose.Schema({
     phone: { type: Object, unique: true },
     phoneVerificationToken: Number,
     phoneVerificationExpires: Date,
     phoneVerified: Boolean,
     email: String,
-    name: String,
+    firstName: String,
+    lastName: String,
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -16,20 +13,6 @@ const userSchema = new mongoose.Schema({
     emailVerified: Boolean,
     tokens: Array
 }, { timestamps: true });
-
-// Password hash middleware
-userSchema.pre('save', function save(next) {
-    const user = this;
-    if (!user.isModified('password')) { return next(); }
-    bcrypt.genSalt(10, (err, salt) => {
-        if (err) { return next(err); }
-            bcrypt.hash(user.password, salt, (err, hash) => {
-        if (err) { return next(err); }
-            user.password = hash;
-            next();
-        });
-    });
-});
 
 // Helper method for validating user's password.
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
