@@ -1,6 +1,7 @@
 // import node modules
 dotenv = require('dotenv').config({ path: '.env' });;
 mongoose = require('mongoose');
+ObjectId = require('mongodb').ObjectID;
 bcrypt = require('bcrypt');
 express = require('express');
 session = require('express-session');
@@ -20,6 +21,7 @@ passportConfig = require('./config/passport');
 twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 validatePhone = require('phone');
 validator = require('validator');
+sgMail = require('@sendgrid/mail');
 
 // for cleanup tasks
 sleep = (ms) => {
@@ -28,8 +30,11 @@ sleep = (ms) => {
 
 // import config files
 require('./config/mongodb');
+require('./config/sendgrid');
+require('./config/models');
 require('./config/express');
 require('./config/errorHandler');
+require('./config/controllers');
 require('./config/routes');
 
 

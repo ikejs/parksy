@@ -1,8 +1,3 @@
-// Controllers
-const indexController = require('../controllers/index');
-const userController = require('../controllers/user');
-
-
 // GETs
 app.get('/', indexController.index);
 app.get('/signup', userController.getSignup);

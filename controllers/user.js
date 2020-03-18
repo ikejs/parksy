@@ -1,7 +1,3 @@
-const User = require('../models/User');
-
-
-
 exports.getSignup = (req, res) => {
     res.render('account/signup');
 }
@@ -21,17 +17,16 @@ exports.postPhoneSignup = (req, res, next) => {
             phoneVerificationToken,
             phoneVerificationExpires: Date.now() + timeToVerify
         }).save().then(user => {
-            console.log(user);
             if (err) {
                 return res.send({ err })
             } else {
-                // twilio.messages.create({
-                //     body: `Your Parksy verification code is: ${phoneVerificationToken}`,
-                //     from: process.env.TWILIO_NUMBER,
-                //     to: user.phone.number
-                // }).then(() => {
+                twilio.messages.create({
+                    body: `Your Parksy verification code is: ${phoneVerificationToken}`,
+                    from: process.env.TWILIO_NUMBER,
+                    to: user.phone.number
+                }).then(() => {
                     res.send(user._id);
-                // });
+                });
                 sleep(timeToVerify).then(() => {
                     if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
                     if(!user.phoneVerified) {
@@ -97,7 +92,7 @@ exports.postSignup = (req, res, next) => {
             bcrypt.hash(req.body.password, salt, (err, password) => {
                 if (err) { return next(err); }
                 // finish user object
-                const { firstName, lastName, email } = req.body;
+                const { firstName, lastName, email, userID } = req.body;
                 User.updateOne({ _id: req.body.userID }, {
                     $set: {
                         firstName,
@@ -105,9 +100,10 @@ exports.postSignup = (req, res, next) => {
                         email,
                         password
                     }
+                }).then(() => {
+                    sendConfirmationEmail(userID);
+                    return res.send('login');
                 });
-                res.send('login');
-                // sendConfirmationEmail(req.body.userID);
             });
         });
     });
