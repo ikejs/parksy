@@ -6,10 +6,16 @@ exports.getSignup = (req, res) => {
 exports.postPhoneSignup = (req, res, next) => {
     const phoneVerificationToken = Math.floor(1000 + Math.random() * 9000);
     const number = validatePhone(req.body.phone)[0];
-    const country = validatePhone(req.body.phone)[1];
+    const country = validatePhone(req.body.country)[1];
     const timeToVerify = 1000 * 60 * 5; // 5 minutes
 
-    User.findOne({ "phone.number": number }, (err, existingUser) => {
+    console.log(validatePhone(req.body.phone, country));
+
+    if(!validatePhone(req.body.phone, country).length) {
+        return res.send({ errors: [`${req.body.phone} is not a valid phone number for ${req.body.country}`] })
+    }
+
+    User.findOne({ phone: { number, country } }, (err, existingUser) => {
         if (err) { return next(err); }
         if (existingUser) { return res.send({ errors: ["Account with that phone number already exists."] }) }
         new User({

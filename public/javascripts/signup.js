@@ -2,7 +2,8 @@ $("#phoneSignup").submit((e) => {
     e.preventDefault();
     axios.post('/phoneSignup', {
         _csrf: $("#_csrf").val(),
-        phone: $("#phone").val()
+        phone: $("#phone").val(),
+        country: $("#country").val()
     }).then(res => {
         if(res.data.errors) {
             return res.data.errors.map(error => {
