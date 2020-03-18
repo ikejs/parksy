@@ -6,42 +6,39 @@ exports.getSignup = (req, res) => {
 exports.postPhoneSignup = (req, res, next) => {
     const phoneVerificationToken = Math.floor(1000 + Math.random() * 9000);
     const number = validatePhone(req.body.phone)[0];
-    const country = validatePhone(req.body.country)[1];
-    const timeToVerify = 1000 * 60 * 5; // 5 minutes
+    const timeToVerify = 1000 * 60 * 5; // 5 minutes to enter confirmation code before account is deleted.
 
-    console.log(validatePhone(req.body.phone, country));
-
-    if(!validatePhone(req.body.phone, country).length) {
+    if(!validatePhone(req.body.phone, req.body.country).length) {
         return res.send({ errors: [`${req.body.phone} is not a valid phone number for ${req.body.country}`] })
-    }
-
-    User.findOne({ phone: { number, country } }, (err, existingUser) => {
-        if (err) { return next(err); }
-        if (existingUser) { return res.send({ errors: ["Account with that phone number already exists."] }) }
-        new User({
-            phone: { number, country },
-            phoneVerificationToken,
-            phoneVerificationExpires: Date.now() + timeToVerify
-        }).save().then(user => {
-            if (err) {
-                return res.send({ err })
-            } else {
-                twilio.messages.create({
-                    body: `Your Parksy verification code is: ${phoneVerificationToken}`,
-                    from: process.env.TWILIO_NUMBER,
-                    to: user.phone.number
-                }).then(() => {
-                    res.send(user._id);
-                });
-                sleep(timeToVerify).then(() => {
-                    if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
-                    if(!user.phoneVerified) {
-                        return User.deleteOne({ _id: user._id });
-                    }
-                });
-            }
+    } else {
+        User.findOne({ $and: [ { "phone.number": number }, { "phone.country": req.body.country } ] }, (err, existingUser) => {
+            if (err) { return next(err); }
+            if (existingUser) { return res.send({ errors: ["Account with that phone number already exists."] }) }
+            new User({
+                phone: { number, country: req.body.country },
+                phoneVerificationToken,
+                phoneVerificationExpires: Date.now() + timeToVerify
+            }).save().then(user => {
+                if (err) {
+                    return res.send({ err })
+                } else {
+                    twilio.messages.create({
+                        body: `Your Parksy verification code is: ${phoneVerificationToken}`,
+                        from: process.env.TWILIO_NUMBER,
+                        to: user.phone.number
+                    }).then(() => {
+                        res.send(user._id);
+                    });
+                    sleep(timeToVerify).then(() => {
+                        if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
+                        if(!user.phoneVerified) {
+                            return User.deleteOne({ _id: user._id });
+                        }
+                    });
+                }
+            });
         });
-    });
+    }
 }
 
 
