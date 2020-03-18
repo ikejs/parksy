@@ -17,6 +17,12 @@ sass = require('node-sass-middleware');
 errorHandler = require('errorhandler');
 passportConfig = require('./config/passport');
 twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+validatePhone = require('phone');
+
+// for cleanup tasks
+sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 // import config files
 require('./config/mongodb');

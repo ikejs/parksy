@@ -3,9 +3,11 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    phone: { type: String },
-    code: String,
-    email: { type: String, required: false, lowercase: true },
+    phone: { type: Object, unique: true },
+    phoneVerificationToken: Number,
+    phoneVerificationExpires: Date,
+    phoneVerified: Boolean,
+    email: String,
     name: String,
     password: String,
     passwordResetToken: String,

@@ -65,6 +65,7 @@
     "passport-snapchat": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.8.1",
+    "phone": "^2.4.8",
     "popper.js": "^1.16.0",
     "pug": "^2.0.4",
     "request": "^2.88.0",

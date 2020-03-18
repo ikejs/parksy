@@ -1,28 +1,40 @@
 const User = require('../models/User');
 
+
 exports.getSignup = (req, res) => {
     res.render('account/signup');
 }
 
 exports.postPhoneSignup = (req, res, next) => {
-    const code = Math.floor(1000 + Math.random() * 9000);
-    User.findOne({ phone: req.body.phone }, (err, existingUser) => {
+    const phoneVerificationToken = Math.floor(1000 + Math.random() * 9000);
+    const number = validatePhone(req.body.phone)[0];
+    const country = validatePhone(req.body.phone)[1];
+    const timeToVerify = 1000 * 60 * 5; // 5 minutes
+
+    User.findOne({ "phone.number": number }, (err, existingUser) => {
         if (err) { return next(err); }
         if (existingUser) { return res.send({ err: "Account with that phone number already exists." }) }
         new User({
-            phone: req.body.phone,
-            code
+            phone: { number, country },
+            phoneVerificationToken,
+            phoneVerificationExpires: Date.now() + timeToVerify
         }).save().then(user => {
             console.log(user);
             if (err) {
-                return next(err);
+                return res.send({ err })
             } else {
                 twilio.messages.create({
-                    body: `Your Parksy verification code is: ${code}`,
+                    body: `Your Parksy verification code is: ${phoneVerificationToken}`,
                     from: process.env.TWILIO_NUMBER,
-                    to: req.body.phone
+                    to: user.phone.number
                 }).then(() => {
                     res.send(user._id);
+                });
+                sleep(timeToVerify).then(() => {
+                    if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
+                    if(!user.phoneVerified) {
+                        return User.deleteOne({ _id: user._id });
+                    }
                 });
             }
         });
@@ -30,17 +42,33 @@ exports.postPhoneSignup = (req, res, next) => {
 }
 
 exports.postCheckCode = (req, res) => {
-    if(req.body.signup) {
-        User.findOne({ _id: req.body.userID }).then(user => {
-            if(req.body.code === user.code) {
-                return res.send(user)
-            } else {
-                return res.send({ err: "Incorrect code. Please try again." })
-            }
-        });
-    } else {
-        // check code for a login
-    }
+    User
+    .findOne({ _id: req.body.userID })
+    .where('phoneVerificationExpires').gt(Date.now())
+    .exec((err, user) => {
+      if (err) { return next(err); }
+      if (!user) {
+        return res.send({ err: "Invalid or expired verification code. Please refresh and try again." })
+      } else {
+        if(req.body.signup) {
+            User.findOne({ _id: req.body.userID }).then(user => {
+                if(parseInt(req.body.code) === user.phoneVerificationToken) {
+                    user.phoneVerificationToken = '';
+                    user.phoneVerificationExpires = '';
+                    user.phoneVerified = true;
+                    user.save((err) => {
+                        if(err) { return res.send({ err }) }
+                        return res.send(user)
+                    })
+                } else {
+                    return res.send({ err: "Incorrect code. Please try again." })
+                }
+            });
+        } else {
+            // check code for a login
+        }
+      }
+    });
 }
 
 exports.postSignup = (req, res) => {
