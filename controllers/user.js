@@ -13,7 +13,7 @@ exports.postPhoneSignup = (req, res, next) => {
 
     User.findOne({ "phone.number": number }, (err, existingUser) => {
         if (err) { return next(err); }
-        if (existingUser) { return res.send({ err: "Account with that phone number already exists." }) }
+        if (existingUser) { return res.send({ errors: ["Account with that phone number already exists."] }) }
         new User({
             phone: { number, country },
             phoneVerificationToken,
@@ -48,7 +48,7 @@ exports.postCheckCode = (req, res) => {
     .exec((err, user) => {
       if (err) { return next(err); }
       if (!user) {
-        return res.send({ err: "Invalid or expired verification code. Please refresh and try again." })
+        return res.send({ errors: ["Invalid or expired verification code. Please refresh and try again."] })
       } else {
         if(req.body.signup) {
             User.findOne({ _id: req.body.userID }).then(user => {
@@ -61,7 +61,7 @@ exports.postCheckCode = (req, res) => {
                         return res.send(user)
                     })
                 } else {
-                    return res.send({ err: "Incorrect code. Please try again." })
+                    return res.send({ errors: ["Incorrect code. Please try again."] })
                 }
             });
         } else {
@@ -72,29 +72,22 @@ exports.postCheckCode = (req, res) => {
 }
 
 exports.postSignup = (req, res) => {
-    const validationErrors = [];
-    if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' });
-    if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' });
-    if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' });
+    const errors = [];
+    if (!validator.isEmail(req.body.email)) validationErrors.push('Please enter a valid email address.');
+    if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push('Password must be at least 8 characters long');
+    if (req.body.password !== req.body.confirmPassword) validationErrors.push('Passwords do not match');
 
     if (validationErrors.length) {
-        req.flash('errors', validationErrors);
+        res.send({ errors })
         return res.redirect('/signup');
     }
 
     req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        group: req.query.g
-    });
-
     User.findOne({ email: req.body.email }, (err, existingUser) => {
         if (err) { return next(err); }
         if (existingUser) {
-            req.flash('errors', { msg: 'Account with that email address already exists.' });
+            res.send({ errors: ["Account with that email address already exists."] })
             return res.redirect('/signup');
         }
         user.save((err) => {
