@@ -1,5 +1,76 @@
-<link rel="stylesheet" href="../stylesheets/main.css">
-<script src="../javascripts/axios.min.js"></script>
-<script src="../javascripts/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{title}} | Parksy - Rent Parking Spaces, Sell Parking Spaces Online</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../stylesheets/bootstrap.min.css" />
+        <link rel="stylesheet" href="../stylesheets/materialdesignicons.css" />
+        <link href="../stylesheets/style.css" rel="stylesheet" />
+        <link href="../stylesheets/main.css" rel="stylesheet" />
+        <script src="../javascripts/jquery-3.4.1.min.js"></script>
+        <script src="../javascripts/bootstrap.bundle.min.js"></script>
+        <script src="../javascripts/axios.min.js"></script>
+        <script src="../javascripts/main.js"></script>
+        <script src="../javascripts/flash.js"></script>
+    </head>
+    <body>
+        <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div>
 
-{{{body}}}
+        {{#unless noNav}}
+            <header id="topnav" class="defaultscroll sticky bg-white">
+                <div class="container">
+                    <a class="logo" href="/">Parksy<span class="text-primary">.</span></a>
+                    <div class="sign-up-button">
+                        {{#if this.user}}
+                                <a href="/logout">Logout</a>
+                        {{else}}
+                                <a href="/login" class="mr-3">Login</a>
+                                <a href="/signup" class="btn btn-primary">Sign Up</a>
+                        {{/if}}
+                    </div>
+                    <div class="menu-extras">
+                        <div class="menu-item">
+                            <a class="navbar-toggle">
+                                <div class="lines">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="navigation">
+                        <ul class="navigation-menu">
+                            {{!-- <li><a href="/">Home</a></li> --}}
+                        </ul>
+                        <div class="buy-menu-btn d-none">
+                            {{#if user}}
+                                <a href="/logout">Logout</a>
+                            {{else}}
+                                <a href="/signup" class="btn btn-primary">Sign Up</a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </header>
+        {{/unless}}
+
+        <section>
+            {{{body}}}
+        </section>
+
+        <a href="#" class="back-to-top rounded text-center" id="back-to-top"> 
+            <i class="mdi mdi-chevron-up d-block"></i>
+        </a>
+
+    </body>
+</html>

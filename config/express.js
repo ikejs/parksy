@@ -36,7 +36,11 @@ app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
 app.use((req, res, next) => {
-  lusca.csrf()(req, res, next);
+  if(req.user && !req.user.emailVerified) {
+    req.flash('warning', { msg: `Check <strong>${req.user.email}</strong> for a verification email to activate your account. <br><small><strong><a href="/">Click here</a></strong> to send again.</small>` })
+  }
+  lusca.csrf()(req, res, next);  
+  res.locals.user = req.user;
 });
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
