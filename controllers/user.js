@@ -78,6 +78,7 @@ exports.postCheckCode = (req, res) => {
 
 
 exports.postSignup = (req, res, next) => {
+    const timeToVerify = 1000 * 60 * 60 * 24; // 1 day to confirm email before expiry.
     const errors = [];
     if (!validator.isEmail(req.body.email)) errors.push('Please enter a valid email address.');
     if (!validator.isLength(req.body.password, { min: 8 })) errors.push('Password must be at least 8 characters long');
@@ -105,16 +106,58 @@ exports.postSignup = (req, res, next) => {
                         firstName,
                         lastName,
                         email,
-                        password
+                        password,
+                        emailVerificationToken: generateToken(),
+                        emailVerificationExpires: Date.now() + timeToVerify
                     }
                 }).then(() => {
-                    sendConfirmationEmail(userID);
+                    sendConfirmationEmail(userID, req);
                     return res.send('login');
                 });
             });
         });
     });
 }
+
+
+exports.getConfirmEmailToken = (req, res, next) => {
+    if (req.user.emailVerified) {
+      req.flash('info', { msg: 'The email address has been verified.' });
+      return res.redirect('/');
+    }
+  
+    const validationErrors = [];
+    if (req.params.token && (!validator.isHexadecimal(req.params.token))) validationErrors.push({ msg: 'Invalid Token.  Please retry.' });
+    if (validationErrors.length) {
+      req.flash('errors', validationErrors);
+      return res.redirect('/');
+    }
+  
+    if (req.params.token === req.user.emailVerificationToken) {
+      User
+        .findOne({ email: req.user.email })
+        .then((user) => {
+          if (!user) {
+            req.flash('errors', { msg: 'There was an error in loading your profile.' });
+            return res.redirect('/');
+          }
+          user.emailVerificationToken = '';
+          user.emailVerified = true;
+          user = user.save();
+          req.flash('success', { msg: 'Your email has been verified!' });
+          return res.redirect('/');
+        })
+        .catch((error) => {
+          console.log('Error saving the user profile to the database after email verification', error);
+          req.flash('errors', { msg: 'There was an error when updating your profile.  Please try again later.' });
+          return res.redirect('/');
+        });
+    } else {
+      req.flash('errors', { msg: 'The verification link was invalid, or is for a different account.' });
+      return res.redirect('/');
+    }
+  };
+
 
 
 exports.getLogin = (req, res) => {

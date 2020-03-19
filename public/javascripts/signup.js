@@ -18,6 +18,7 @@ $("#phoneSignup").submit((e) => {
         $("#phoneSignup").addClass('hidden');
         $("#checkCode").removeClass('hidden');
         flash('success', { msg: 'Code sent to: ' + $("#phone").val() });
+        $("#code").focus();
     });
 });
 
@@ -36,6 +37,7 @@ $("#checkCode").submit((e) => {
         console.log(res);
         $("#checkCode").addClass('hidden');
         $("#finishSignup").removeClass('hidden');
+        $("#firstName").focus();
     });
 });
 

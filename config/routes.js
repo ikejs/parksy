@@ -3,6 +3,7 @@ app.get('/', indexController.index);
 app.get('/signup', userController.getSignup);
 app.get('/login', userController.getLogin);
 app.get('/logout', userController.logout);
+app.get('/confirm/:token', userController.getConfirmEmailToken);
 
 
 // POSTs

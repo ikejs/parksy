@@ -22,6 +22,11 @@ twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AU
 validatePhone = require('phone');
 validator = require('validator');
 sgMail = require('@sendgrid/mail');
+crypto = require('crypto');
+
+generateToken = () => {
+    return crypto.randomBytes(16).toString('hex');
+}
 
 // for cleanup tasks
 sleep = (ms) => {
