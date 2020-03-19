@@ -1,5 +1,9 @@
-$("#phoneSignup").submit((e) => {
+$("form").submit((e) => {
     e.preventDefault();
+    clearFlash();
+});
+
+$("#phoneSignup").submit((e) => {
     axios.post('/phoneSignup', {
         _csrf: $("#_csrf").val(),
         phone: $("#phone").val(),
@@ -7,17 +11,17 @@ $("#phoneSignup").submit((e) => {
     }).then(res => {
         if(res.data.errors) {
             return res.data.errors.map(error => {
-                alert(error);
+                flash('errors', { msg: error });
             });
         }
         $("#newUserId").val(res.data);
         $("#phoneSignup").addClass('hidden');
         $("#checkCode").removeClass('hidden');
+        flash('success', { msg: 'Code sent to: ' + $("#phone").val() });
     });
 });
 
 $("#checkCode").submit((e) => {
-    e.preventDefault();
     axios.post('/checkCode', {
         _csrf: $("#_csrf").val(),
         signup: true,
@@ -36,10 +40,6 @@ $("#checkCode").submit((e) => {
 });
 
 $("#finishSignup").submit((e) => {
-    e.preventDefault();
-    if($('#password').val() !== $('#confirmPassword').val()) { // check if passwords match
-        return alert("Passwords do not match");
-    }
     axios.post('/signup', {
         _csrf: $("#_csrf").val(),
         userID: $("#newUserId").val(),
