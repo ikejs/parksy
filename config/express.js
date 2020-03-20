@@ -37,7 +37,7 @@ app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
 app.use((req, res, next) => {
   if(req.user && !req.user.emailVerified) {
-    req.flash('warning', { msg: `Check <strong>${req.user.email}</strong> for a verification email to activate your account. <br><small><strong><a href="/">Click here</a></strong> to send again.</small>` })
+    req.flash('warning', { msg: `Check <strong>${req.user.email}</strong> for a verification email to activate your account. <br><small><strong><a href="/send-email-confirmation/${req.user._id}">Click here</a></strong> to send again.</small>` })
   }
   lusca.csrf()(req, res, next);  
   res.locals.user = req.user;
