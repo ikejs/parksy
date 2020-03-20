@@ -199,7 +199,8 @@ exports.postLogin = (req, res, next) => {
       req.logIn(user, (err) => {
         if (err) { return next(err); }
         req.flash('success', { msg: `Welcome back, ${req.user.firstName}!` });
-        res.redirect(req.session.returnTo || '/');
+        // res.redirect(req.session.returnTo || '/'); // this is causing the browser to return to the /checkCode url from axios.
+        res.redirect('/'); // temporary fix
       });
     })(req, res, next);
   };
