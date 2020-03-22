@@ -12,7 +12,7 @@ exports.getNew = (req, res) => {
 }
 
 exports.postNew = (req, res) => {    
-    const imagePath = `${req.user._id}-${ObjectId()}.jpg`
+    const imagePath = `${req.user._id}-${ObjectId()}`
     S3.upload(req.files.image.tempFilePath, imagePath, {
         resize: { width: 400 }
     })
