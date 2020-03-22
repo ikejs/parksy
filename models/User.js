@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
     passwordResetExpires: Date,
     emailVerificationToken: String,
     emailVerified: Boolean,
-    tokens: Array
+    tokens: Array,
+    lots : [{ type: mongoose.Schema.Types.ObjectId, ref: "lot" }]
 }, { timestamps: true });
 
 // Helper method for validating user's password.

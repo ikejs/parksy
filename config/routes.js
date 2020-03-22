@@ -2,7 +2,7 @@ const { isAuthenticated, isEmailVerified } = passportConfig;
 
 const { index } = indexController;
 const { getSignup, getLogin, logout, getConfirmEmailToken, postPhoneSignup, postCheckCode, postSignup, postLogin, getAnotherEmailConfirmation } = userController;
-const { getSellerDashboard, getNew } = sellerController;
+const { getSellerDashboard, getNew, postNew } = sellerController;
 
 
 // GETs
@@ -22,3 +22,4 @@ app.post('/phoneSignup', postPhoneSignup);
 app.post('/checkCode', postCheckCode);
 app.post('/signup', postSignup);
 app.post('/login', postLogin);
+app.post('/sell/new', postNew);

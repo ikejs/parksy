@@ -1,5 +1,180 @@
-<div class="col-md-8 offset-md-2 pt-4">
-    <div class="row p-4">
-        <input type="text" />
+<link rel="stylesheet" href="../stylesheets/new.css" />
+
+<section class="bg-half bg-light d-table w-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 text-center">
+                <div class="page-next-level">
+                    <h4 class="title"> {{title}} </h4>
+                    <ul class="page-next d-inline-block bg-white shadow p-2 pl-4 pr-4 rounded mb-0">
+                        <li><a href="/" class="text-uppercase font-weight-bold text-dark">Home</a></li>
+                        <li><a href="/sell" class="text-uppercase font-weight-bold text-dark">Sell</a></li> 
+                        <li>
+                            <span class="text-uppercase text-primary font-weight-bold">New</span> 
+                        </li> 
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="position-relative">
+    <div class="shape overflow-hidden text-white">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
     </div>
 </div>
+
+<section class="section bg-dark">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-7">
+                <div class="custom-form">
+                    <form autocomplete="off" class="rounded shadow p-4 bg-white" action="/sell/new" method="POST" enctype="multipart/form-data">
+                        <input style="display: none;" class="hidden" name="_csrf" value="{{_csrf}}" />
+                        {{> flash}}
+                        <div class="col-md-12">
+                            <h4>Lot Details</h4>
+                            <hr class="mt-0">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative">
+                                        <label>Name: <small>(leave empty to set address as name)</small></label>
+                                        <i class="mdi mdi-label ml-3 icons"></i>
+                                        <input name="lotName" id="lotName" type="text" class="form-control pl-5" placeholder="49ers Gameday Parking">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative">
+                                        <label>Address: <span class="text-danger">*</span></label>
+                                        <i class="mdi mdi-map-marker ml-3 icons"></i>
+                                        <input name="lotAddress" id="lotAddress" onkeypress="return event.keyCode!=13" type="text" class="form-control pl-5" placeholder="36 Parksy Ln, San Francisco, CA, USA">
+                                    </div> 
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative">
+                                        <label>Description:</label>
+                                        <i class="mdi mdi-comment-text-outline ml-3 icons"></i>
+                                        <textarea name="comments" id="comments" rows="4" class="form-control pl-5" placeholder="Just a 5 minute walk from Levi's Stadium."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group position-relative">
+                                        <label>Upload Image: </label>
+                                        <div class="input-group">
+                                            <span class="input-group-btn w-100">
+                                                <span id="uploadBtn" class="btn btn-info btn-file btn-block">
+                                                    <span class="fa fa-upload"></span> <span id="uploadBtnText">Upload</span> <input type="file" id="imgInp" name="image">
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <img class="img-thumbnail hidden" id='img-upload'/>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4>Spaces</h4>
+                            <hr class="mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Spaces Available: <span class="text-danger">*</span></label>
+                                        <input name="lotSpaces" id="lotSpaces" type="number" class="form-control" placeholder="0">
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="all">
+                                        <input class="form-check-input" type="radio" name="allEachSelector" id="all" value="all" checked>
+                                            Edit all
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="each">
+                                        <input class="form-check-input" type="radio" name="allEachSelector" id="each" value="each">
+                                            Edit each
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="editAllSpaces" class="col-md-9 row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Price Per Space: <span class="text-danger">*</span></label>
+                                            <input name="spacePrice" id="spacePrice" type="number" class="form-control" placeholder="0.00">
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group position-relative">
+                                            <label>Time Limit: <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="phone" placeholder="0" />
+                                                <div class="input-group-append col-md-6 p-0">
+                                                    <select class="custom-select custom-select-lg btn btn-outline-secondary dropdown-toggle" name="lotSpaceTimeLimitType" id="lotSpaceTimeLimitType">
+                                                        <option value="hours" selected>hours</option>
+                                                        <option value="minutes">minutes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>                                                                               
+                                    </div>
+                                </div>
+                                <div id="editEachSpace" class="col-md-9 hidden">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Time Limit<br>Per Customer</th>
+                                                <th scope="col">Date(s) Available</th>
+                                                <th scope="col">Start Time</th>
+                                                <th scope="col">End Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>1</th>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" aria-label="$" aria-describedby="inputGroup-sizing-sm" placeholder="0.00">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" id="phone" placeholder="0" />
+                                                        <div class="input-group-append input-group-sm col-md-6 p-0">
+                                                            <select class="custom-select custom-select-lg btn btn-outline-secondary btn-sm dropdown-toggle" name="lotSpaceTimeLimitType" id="lotSpaceTimeLimitType">
+                                                                <option value="hours" selected>hours</option>
+                                                                <option value="minutes">minutes</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>coming</td>
+                                                <td>soon</td>
+                                                <td>...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12 text-center mt-4">
+                                    <div class="form-group mt-4">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="accept">
+                                            <label class="custom-control-label" for="accept">I Accept <a href="/terms-of-service" class="text-primary">Terms Of Service</a> &amp; <a href="/privacy-policy" class="text-primary">Privacy Policy</a></label>
+                                        </div>
+                                        <button class="btn btn-success mt-2" type="submit">Finish</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" src="../javascripts/places.js"></script>
+<script src="../javascripts/new.js"></script>
