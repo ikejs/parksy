@@ -33,11 +33,6 @@ generateToken = () => {
     return crypto.randomBytes(16).toString('hex');
 }
 
-// for cleanup tasks
-sleep = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 // import config files
 require('./config/mongodb');
 require('./config/sendgrid');

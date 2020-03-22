@@ -15,13 +15,17 @@ exports.postPhoneSignup = (req, res, next) => {
     if(!validatePhone(req.body.phone, req.body.country).length) {
         return res.send({ errors: [`${req.body.phone} is not a valid phone number for ${req.body.country}`] })
     } else {
-        User.findOne({ $and: [ { "phone.number": number }, { "phone.country": req.body.country } ] }, (err, existingUser) => {
+        User.findOne({ $and: [ { "phone.number": number }, { "phone.country": req.body.country } ] }, async (err, existingUser) => {
             if (err) { return next(err); }
-            if (existingUser) { return res.send({ errors: ["Account with that phone number already exists."] }) }
+            if (existingUser && existingUser.phoneVerified) { 
+              return res.send({ errors: ["Account with that phone number already exists."] });
+            } else if (existingUser) {
+              await Promise.all([User.deleteOne({ _id: existingUser._id })]); // delete user if created but phone not verified.
+            }
             new User({
-                phone: { number, country: req.body.country },
-                phoneVerificationToken,
-                phoneVerificationExpires: Date.now() + timeToVerify
+              phone: { number, country: req.body.country },
+              phoneVerificationToken,
+              phoneVerificationExpires: Date.now() + timeToVerify
             }).save().then(user => {
                 if (err) {
                     return res.send({ err })
@@ -32,12 +36,6 @@ exports.postPhoneSignup = (req, res, next) => {
                         to: user.phone.number
                     }).then(() => {
                         res.send(user._id);
-                        sleep(timeToVerify).then(() => {
-                          if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
-                          if(!user.phoneVerified) {
-                              return User.deleteOne({ _id: user._id });
-                          }
-                      });
                     });
                 }
             });
