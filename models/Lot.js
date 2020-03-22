@@ -1,9 +1,11 @@
 const lotSchema = new mongoose.Schema({
-    label: String,
+    lotName: String,
     description: String,
+    address: String,
+    imageURLs: Array,
     openSalesDate: Date,
     openLotDate: Date,
-    spaces : [{ type: mongoose.Schema.Types.ObjectId, ref: "space" }]
+    spaces: [{ type: mongoose.Schema.Types.ObjectId, ref: "space" }]
 }, { timestamps: true });
 
 

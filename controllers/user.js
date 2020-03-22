@@ -32,12 +32,12 @@ exports.postPhoneSignup = (req, res, next) => {
                         to: user.phone.number
                     }).then(() => {
                         res.send(user._id);
-                    });
-                    sleep(timeToVerify).then(() => {
-                        if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
-                        if(!user.phoneVerified) {
-                            return User.deleteOne({ _id: user._id });
-                        }
+                        sleep(timeToVerify).then(() => {
+                          if(err) { return console.log(`FAILED TO REMOVE UNVERIFIED USER: ${user}`) }
+                          if(!user.phoneVerified) {
+                              return User.deleteOne({ _id: user._id });
+                          }
+                      });
                     });
                 }
             });
