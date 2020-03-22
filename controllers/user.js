@@ -107,8 +107,7 @@ exports.postSignup = (req, res, next) => {
                         lastName,
                         email,
                         password,
-                        emailVerificationToken: generateToken(),
-                        emailVerificationExpires: Date.now() + timeToVerify
+                        emailVerificationToken: generateToken()
                     }
                 }).then(() => {
                     sendConfirmationEmail(userID, req);
@@ -117,6 +116,17 @@ exports.postSignup = (req, res, next) => {
             });
         });
     });
+}
+
+
+exports.getAnotherEmailConfirmation = (req, res) => {
+  User.updateOne({ _id: req.params.userID }, {
+    $set: { emailVerificationToken: generateToken() }
+  }).then(() => {
+      sendConfirmationEmail(req.params.userID, req);
+      req.flash('info', { msg: 'Verification email resent.' });
+      res.redirect('/');
+  });
 }
 
 
@@ -188,7 +198,7 @@ exports.postLogin = (req, res, next) => {
       }
       req.logIn(user, (err) => {
         if (err) { return next(err); }
-        req.flash('success', { msg: 'Success! You are logged in.' });
+        req.flash('success', { msg: `Welcome back, ${req.user.firstName}!` });
         res.redirect(req.session.returnTo || '/');
       });
     })(req, res, next);

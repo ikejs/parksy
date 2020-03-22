@@ -23,6 +23,11 @@ validatePhone = require('phone');
 validator = require('validator');
 sgMail = require('@sendgrid/mail');
 crypto = require('crypto');
+fs = require('fs');
+AWS = require('aws-sdk');
+Sharp = require('sharp');
+S3 = require('./config/s3');
+fileUpload = require('express-fileupload')
 
 generateToken = () => {
     return crypto.randomBytes(16).toString('hex');

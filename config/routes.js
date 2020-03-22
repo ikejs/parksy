@@ -1,13 +1,25 @@
+const { isAuthenticated, isEmailVerified } = passportConfig;
+
+const { index } = indexController;
+const { getSignup, getLogin, logout, getConfirmEmailToken, postPhoneSignup, postCheckCode, postSignup, postLogin, getAnotherEmailConfirmation } = userController;
+const { getSellerDashboard, getNew, postNew } = sellerController;
+
+
 // GETs
-app.get('/', indexController.index);
-app.get('/signup', userController.getSignup);
-app.get('/login', userController.getLogin);
-app.get('/logout', userController.logout);
-app.get('/confirm/:token', userController.getConfirmEmailToken);
+app.get('/', index);
+app.get('/signup', getSignup);
+app.get('/login', getLogin);
+app.get('/logout', logout);
+app.get('/confirm/:token', isAuthenticated, getConfirmEmailToken);
+app.get('/send-email-confirmation/:userID', isAuthenticated, getAnotherEmailConfirmation);
+
+app.get('/sell', isEmailVerified, getSellerDashboard);
+app.get('/sell/new', isEmailVerified, getNew);
 
 
 // POSTs
-app.post('/phoneSignup', userController.postPhoneSignup);
-app.post('/checkCode', userController.postCheckCode);
-app.post('/signup', userController.postSignup);
-app.post('/login', userController.postLogin);
+app.post('/phoneSignup', postPhoneSignup);
+app.post('/checkCode', postCheckCode);
+app.post('/signup', postSignup);
+app.post('/login', postLogin);
+app.post('/sell/new', postNew);

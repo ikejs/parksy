@@ -65,6 +65,18 @@ exports.isAuthenticated = (req, res, next) => {
   res.redirect('/login');
 };
 
+exports.isEmailVerified = (req, res, next) => {
+  if(req.user) {
+    if(req.user.emailVerified) {
+      return next();
+    }
+    req.flash('warning', { msg: "You must confirm your email before selling parking!" })
+    res.redirect('/')
+  } else {
+    res.redirect('/login');
+  }
+}
+
 /**
  * Authorization Required middleware.
  */
