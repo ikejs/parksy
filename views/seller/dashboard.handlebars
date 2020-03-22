@@ -7,8 +7,7 @@
         </div>
         {{#if lots}}
             {{#each lots}}
-                {{this}}
-                    <div class="col-md-12 bg-light rounded p-4">
+                    <div class="col-md-12 bg-light rounded p-4 mb-4 mt-4">
                         <h4><strong><a href="/" class="text-success">{{this.lotName}}</a></strong></h4>
                         <p class="lead"><strong><a href="/" class="text-dark">{{this.address}}</a></strong></p>
                         <div class="col-md-4 p-0 float-left">
@@ -22,13 +21,18 @@
                                 >
                             </div>
                         </div>
-                        <div class="col-md-8 float-right">
-                            <img class="w-100 img-fluid" style="opacity: 0.3;" src="https://via.placeholder.com/1000x150?text=Sales+Graph" />
+                        <div class="col-md-8 float-right w-100">
+                            <div class="col-md-12 w-100">
+                                <img class="img-fluid w-100" style="opacity: 0.4;" src="https://via.placeholder.com/1000x200?text=Sales+Graph" />
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <p class="text-truncate text-muted">{{this.description}}</p>
+                                <div class="text-center">
+                                    <a href="/sell/edit/ID" class="btn btn-outline-primary btn-sm p-2"><span class="fa fa-pencil-alt"></span> Edit</a>
+                                    <a href="/parking/ID" class="btn btn-outline-secondary btn-sm p-2"><span class="fa fa-external-link-square-alt"></span> View</a>
+                                </div>
+                            </div>
                         </div>
-                        <center class="col-md-12 mt-4">
-                            <a href="/sell/edit/ID" class="btn btn-outline-primary btn-sm p-2"><span class="fa fa-pencil-alt"></span> Edit</a>
-                            <a href="/parking/ID" class="btn btn-outline-secondary btn-sm p-2"><span class="fa fa-external-link-square-alt"></span> View</a>
-                        </center>
                     </div>
                 {{/each}}
         {{else}}
