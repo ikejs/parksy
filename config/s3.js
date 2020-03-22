@@ -32,7 +32,6 @@ class AWSS3 {
           let width = options.resize.width;
           Sharp(filepath)
             .resize(width)
-            .png()
             .toBuffer()
             .then(buffer => {
               params.Body = buffer;

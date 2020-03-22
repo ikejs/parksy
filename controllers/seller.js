@@ -12,12 +12,13 @@ exports.getNew = (req, res) => {
 }
 
 exports.postNew = (req, res) => {    
-    const imagePath = `${req.user._id}-${ObjectId()}`
+    console.log(req.files.image.tempFilePath);
+    const imagePath = `${req.user._id}-${ObjectId()}.jpg`
     S3.upload(req.files.image.tempFilePath, imagePath, {
         resize: { width: 400 }
     })
     .then(r => {
-        console.log(r);
+        console.log(r.data[0].name);
 
 
         // add to DB

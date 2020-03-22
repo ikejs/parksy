@@ -34,8 +34,9 @@ app.use(passport.session());
 app.use(flash());
 app.disable('x-powered-by');
 app.use(fileUpload({
-  limits: { fileSize: 3000000 }, // 3mb
-  useTempFiles : true
+  limits: { fileSize: 6000000 }, // 6mb
+  useTempFiles : true,
+  tempFilePath: '../tmp/'
 }));
 app.use((req, res, next) => {
   if (req.user && !req.user.emailVerified) {
