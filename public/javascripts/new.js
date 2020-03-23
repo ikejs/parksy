@@ -44,9 +44,11 @@ $(document).ready(() => {
         if(switchTo === 'eventParking') {
             $("#eventDates").removeClass('hidden');
             $("#everydayDates").addClass('hidden');
+            $("#spaceTimeLimit").addClass('hidden');
         } else {
             $("#eventDates").addClass('hidden');
             $("#everydayDates").removeClass('hidden');
+            $("#spaceTimeLimit").removeClass('hidden');
         }
     });
 
