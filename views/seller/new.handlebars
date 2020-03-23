@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../stylesheets/tempusdominus-bootstrap-4.min.css" />
 <link rel="stylesheet" href="../stylesheets/new.css" />
 
 <section class="bg-half bg-light d-table w-100">
@@ -66,12 +67,64 @@
                                         <div class="input-group">
                                             <span class="input-group-btn w-100">
                                                 <span id="uploadBtn" class="btn btn-info btn-file btn-block">
-                                                    <span class="fa fa-upload"></span> <span id="uploadBtnText">Upload</span> <input type="file" id="imgInp" name="image">
+                                                    <span class="fa fa-upload"></span> <span id="uploadBtnText">Upload</span> <input type="file" id="imgInp" name="image" />
                                                 </span>
                                             </span>
                                         </div>
-                                        <img class="img-thumbnail hidden" id='img-upload'/>
+                                        <div class="col-md-12">
+                                            <img class="img-thumbnail hidden" id="img-upload" />
+                                        </div>
+                                        <div class="col-md-12 row mt-4">
+                                            <center>
+                                                <div class="form-check mr-4">
+                                                    <label class="form-check-label" for="eventParking">
+                                                    <input class="form-check-input" type="radio" name="parkingType" id="eventParking" value="eventParking" checked>
+                                                        Event parking
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <label class="form-check-label" for="everydayParking">
+                                                    <input class="form-check-input" type="radio" name="parkingType" id="everydayParking" value="everydayParking">
+                                                        Everyday parking
+                                                    </label>
+                                                </div>
+                                            </center>
+                                        </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div id="eventDates">
+                                <h4>Dates</h4>
+                                <hr class="mt-0">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group" id="chooseEventDatesSelector" data-target-input="nearest">
+                                            <input type="text" id="chooseEventDatesInput" class="form-control datetimepicker-input hidden" />
+                                            <button type="button" class="btn btn-info btn-block" data-target="#chooseEventDatesSelector" data-toggle="datetimepicker" id="chooseEventDatesButton">Choose Dates</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 hidden" id="eventDatesTableWrap">
+                                        <table class="table table-striped shadow rounded table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Event Date</th>
+                                                <th scope="col">Open Lot</th>
+                                                <th scope="col">Close Lot</th>
+                                                <th scope="col">Start Sales</th>
+                                                <th scope="col">End Sales</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="eventDatesTable">
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="everydayDates" class="hidden">
+                                <h4>Daily Time Availability</h4>
+                                <hr class="mt-0">
+                                <div class="row">
+                                    {{!-- Choose open days of the week, and lot hours --}}
                                 </div>
                             </div>
                             <h4>Spaces</h4>
@@ -118,7 +171,7 @@
                                     </div>
                                 </div>
                                 <div id="editEachSpace" class="col-md-9 hidden">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped shadow rounded table-responsive">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
@@ -177,4 +230,7 @@
 </section>
 
 <script type="text/javascript" src="../javascripts/places.js"></script>
+<script src="../javascripts/moment.min.js"></script>
+<script src="../javascripts/tempusdominus-bootstrap-4.min.js"></script>
 <script src="../javascripts/new.js"></script>
+<script src="../javascripts/createEventDates.js"></script>
