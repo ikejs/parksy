@@ -162,7 +162,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div id="dates">
+                            <div id="dates" class="mt-4">
                                 <h4>Dates</h4>
                                 <hr class="mt-0">
                                 <div class="row">
@@ -170,14 +170,14 @@
                                         <label for="typeSelectorWrap">Parking Available: </label>
                                         <div class="input-group" id="typeSelectorWrap">
                                             <div class="form-check mr-4">
-                                                <input class="form-check-input" type="radio" name="parkingType" id="everydayParking" value="everydayParking" checked>
                                                 <label class="form-check-label" for="everydayParking">
+                                                <input class="form-check-input" type="radio" name="parkingType" id="everydayParking" value="everydayParking" checked>
                                                     24/7 
                                                 </label>
                                             </div>
                                             <div class="form-check">
+                                                <label class="form-check-label" for="specificDatesParking">
                                                 <input class="form-check-input" type="radio" name="parkingType" id="specificDatesParking" value="specificDatesParking">
-                                                <label class="form-check-label" for="chooseDatesParking">
                                                     Specific Dates/Times
                                                 </label>
                                             </div>
@@ -186,23 +186,59 @@
                                     <div class="col-md-3 float-right hidden" id="chooseDatesSelectorWrap">
                                         <div class="form-group" id="chooseDatesSelector" data-target-input="nearest">
                                             <input type="text" id="chooseDatesInput" class="form-control datetimepicker-input hidden" />
-                                            <button type="button" class="btn btn-info btn-block" data-target="#chooseDatesSelector" data-toggle="datetimepicker" id="chooseDatesButton">Choose Dates</button>
+                                            <button type="button" class="btn btn-info btn-block" data-target="#chooseDatesSelector" data-toggle="datetimepicker" id="chooseDatesButton"><span class="fa fa-calendar"></span> Choose Dates</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row hidden" id="datesTableWrap">
-                                    <div class="col-md-3 float-left">
+                                <div class="row hidden mt-4" id="datesTableWrap">
+                                    <div class="col-md-3 float-left hidden" id="datesOptions">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                Default checkbox
+                                            <input class="form-check-input" type="checkbox" value="setLotOpenForAll" id="setLotOpenForAll">
+                                            <label class="form-check-label" for="setLotOpenForAll">
+                                                Set lot open for ALL
                                             </label>
+                                            <div class="input-group input-group-sm date hidden" id="openLotAll" data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input" id="openLotAllInput" data-toggle="datetimepicker" data-target="#openLotAll"/>
+                                                <div class="input-group-append" data-target="#openLotAll" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" disabled>
-                                            <label class="form-check-label" for="defaultCheck2">
-                                                Disabled checkbox
+                                            <input class="form-check-input" type="checkbox" value="setLotCloseForAll" id="setLotCloseForAll">
+                                            <label class="form-check-label" for="setLotCloseForAll">
+                                                Set lot close for ALL
                                             </label>
+                                            <div class="input-group input-group-sm date hidden" id="closeLotAll" data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input" id="closeLotAllInput" data-toggle="datetimepicker" data-target="#closeLotAll"/>
+                                                <div class="input-group-append" data-target="#closeLotAll" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="setSalesStartForAll" id="setSalesStartForAll">
+                                            <label class="form-check-label" for="setSalesStartForAll">
+                                                Set sales start for ALL
+                                            </label>
+                                            <div class="input-group input-group-sm date hidden" id="startSalesAll" data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input" id="startSalesAllInput" data-toggle="datetimepicker" data-target="#startSalesAll"/>
+                                                <div class="input-group-append" data-target="#startSalesAll" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="setSalesEndForAll" id="setSalesEndForAll">
+                                            <label class="form-check-label" for="setSalesEndForAll">
+                                                Set sales end for ALL
+                                            </label>
+                                            <div class="input-group input-group-sm date hidden" id="endSalesAll" data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input" id="endSalesAllInput" data-toggle="datetimepicker" data-target="#endSalesAll"/>
+                                                <div class="input-group-append" data-target="#endSalesAll" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-9 float-right">

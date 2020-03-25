@@ -7,8 +7,7 @@ new google.maps.places.Autocomplete(
 
 $(document).ready(() => {
 
-
-    // Image Upload
+    // Image uplading
     $(document).on('change', '.btn-file :file', function() {
         let input = $(this),
         label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -48,6 +47,7 @@ $(document).ready(() => {
         } else {
             $("#chooseDatesSelectorWrap").addClass("hidden");
             $("#datesOptions").addClass("hidden");
+            $("#datesTableWrap").addClass("hidden");
         }
     });
 
