@@ -74,57 +74,7 @@
                                         <div class="col-md-12">
                                             <img class="img-thumbnail hidden" id="img-upload" />
                                         </div>
-                                        <div class="col-md-12 row mt-4">
-                                            <center>
-                                                <div class="form-check mr-4">
-                                                    <label class="form-check-label" for="eventParking">
-                                                    <input class="form-check-input" type="radio" name="parkingType" id="eventParking" value="eventParking" checked>
-                                                        Event parking
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <label class="form-check-label" for="everydayParking">
-                                                    <input class="form-check-input" type="radio" name="parkingType" id="everydayParking" value="everydayParking">
-                                                        Everyday parking
-                                                    </label>
-                                                </div>
-                                            </center>
-                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div id="eventDates">
-                                <h4>Dates</h4>
-                                <hr class="mt-0">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group" id="chooseEventDatesSelector" data-target-input="nearest">
-                                            <input type="text" id="chooseEventDatesInput" class="form-control datetimepicker-input hidden" />
-                                            <button type="button" class="btn btn-info btn-block" data-target="#chooseEventDatesSelector" data-toggle="datetimepicker" id="chooseEventDatesButton">Choose Dates</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-9 hidden" id="eventDatesTableWrap">
-                                        <table class="table table-striped shadow rounded table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Event Date</th>
-                                                <th scope="col">Open Lot</th>
-                                                <th scope="col">Close Lot</th>
-                                                <th scope="col">Start Sales</th>
-                                                <th scope="col">End Sales</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="eventDatesTable">
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="everydayDates" class="hidden">
-                                <h4>Daily Time Availability</h4>
-                                <hr class="mt-0">
-                                <div class="row">
-                                    {{!-- Choose open days of the week, and lot hours --}}
                                 </div>
                             </div>
                             <h4>Spaces</h4>
@@ -211,7 +161,76 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-12 text-center mt-4">
+                            </div>
+                            <div id="dates">
+                                <h4>Dates</h4>
+                                <hr class="mt-0">
+                                <div class="row">
+                                    <div class="col-md-9 float-left">
+                                        <label for="typeSelectorWrap">Parking Available: </label>
+                                        <div class="input-group" id="typeSelectorWrap">
+                                            <div class="form-check mr-4">
+                                                <input class="form-check-input" type="radio" name="parkingType" id="everydayParking" value="everydayParking" checked>
+                                                <label class="form-check-label" for="everydayParking">
+                                                    24/7 
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="parkingType" id="specificDatesParking" value="specificDatesParking">
+                                                <label class="form-check-label" for="chooseDatesParking">
+                                                    Specific Dates/Times
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 float-right hidden" id="chooseDatesSelectorWrap">
+                                        <div class="form-group" id="chooseDatesSelector" data-target-input="nearest">
+                                            <input type="text" id="chooseDatesInput" class="form-control datetimepicker-input hidden" />
+                                            <button type="button" class="btn btn-info btn-block" data-target="#chooseDatesSelector" data-toggle="datetimepicker" id="chooseDatesButton">Choose Dates</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row hidden" id="datesTableWrap">
+                                    <div class="col-md-3 float-left">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Default checkbox
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" disabled>
+                                            <label class="form-check-label" for="defaultCheck2">
+                                                Disabled checkbox
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 float-right">
+                                        <table class="table table-striped shadow rounded table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Open Lot</th>
+                                                    <th scope="col">Close Lot</th>
+                                                    <th scope="col">Start Sales</th>
+                                                    <th scope="col">End Sales</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="datesTable">
+                                                {{!-- jQuery-filled dates --}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="everydayDates" class="hidden">
+                                <h4>Daily Time Availability</h4>
+                                <hr class="mt-0">
+                                <div class="row">
+                                    {{!-- Choose open days of the week, and lot hours --}}
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-center mt-4">
                                     <div class="form-group mt-4">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="accept">
@@ -220,7 +239,6 @@
                                         <button class="btn btn-success mt-2" type="submit">Finish</button>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </form>
                 </div>
@@ -229,8 +247,8 @@
     </div>
 </section>
 
-<script type="text/javascript" src="../javascripts/places.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_PLACES_API_KEY}}&libraries=places"></script>
 <script src="../javascripts/moment.min.js"></script>
 <script src="../javascripts/tempusdominus-bootstrap-4.min.js"></script>
 <script src="../javascripts/new.js"></script>
-<script src="../javascripts/createEventDates.js"></script>
+<script src="../javascripts/createDates.js"></script>

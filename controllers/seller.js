@@ -20,7 +20,8 @@ exports.getSellerDashboard = (req, res) => {
 
 exports.getNew = (req, res) => {
     res.render('seller/new', {
-        title: "Create New Parking Listing"
+        title: "New Parking Lot Listing",
+        GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY
     });
 }
 

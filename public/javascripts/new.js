@@ -7,13 +7,14 @@ new google.maps.places.Autocomplete(
 
 $(document).ready(() => {
 
+
     // Image Upload
     $(document).on('change', '.btn-file :file', function() {
         let input = $(this),
         label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
         input.trigger('fileselect', [label]);
     });
-    $('.btn-file :file').on('fileselect', function(event, label) {
+    $('.btn-file :file').on('fileselect', (event, label) => {
         let input = $(this).parents('.input-group').find(':text'),
             log = label;
         if (input.length) {
@@ -29,7 +30,7 @@ $(document).ready(() => {
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $("#imgInp").change(function(){
+    $("#imgInp").change(() => {
         readURL(this);
         $("#img-upload").removeClass('hidden');
         $("#uploadBtn").removeClass('btn-info');
@@ -38,17 +39,15 @@ $(document).ready(() => {
     });
     
 
-    // lot type event/everyday switcher
+    // lot type 24h/specific-dates switcher
     $("input[name=parkingType]").on("change", function() {
         const switchTo = $(this).val();
-        if(switchTo === 'eventParking') {
-            $("#eventDates").removeClass('hidden');
-            $("#everydayDates").addClass('hidden');
-            $("#spaceTimeLimit").addClass('hidden');
+        if(switchTo === 'specificDatesParking') {
+            $("#chooseDatesSelectorWrap").removeClass("hidden");
+            $("#datesOptions").removeClass("hidden");
         } else {
-            $("#eventDates").addClass('hidden');
-            $("#everydayDates").removeClass('hidden');
-            $("#spaceTimeLimit").removeClass('hidden');
+            $("#chooseDatesSelectorWrap").addClass("hidden");
+            $("#datesOptions").addClass("hidden");
         }
     });
 
@@ -64,6 +63,8 @@ $(document).ready(() => {
             $("#editEachSpace").removeClass('hidden');
         }
    });
+
+
 
 });
 
