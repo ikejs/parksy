@@ -29,7 +29,7 @@ $(document).ready(() => {
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $("#imgInp").change(() => {
+    $("#imgInp").change(function() {
         readURL(this);
         $("#img-upload").removeClass('hidden');
         $("#uploadBtn").removeClass('btn-info');
@@ -44,6 +44,9 @@ $(document).ready(() => {
         if(switchTo === 'specificDatesParking') {
             $("#chooseDatesSelectorWrap").removeClass("hidden");
             $("#datesOptions").removeClass("hidden");
+            if (dates.length > 0) {
+                $("#datesOptions").removeClass("hidden");
+            }
         } else {
             $("#chooseDatesSelectorWrap").addClass("hidden");
             $("#datesOptions").addClass("hidden");
@@ -63,7 +66,6 @@ $(document).ready(() => {
             $("#editEachSpace").removeClass('hidden');
         }
    });
-
 
 
 });

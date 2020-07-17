@@ -82,7 +82,7 @@ exports.postSignup = (req, res, next) => {
     if (!validator.isLength(req.body.password, { min: 8 })) errors.push('Password must be at least 8 characters long');
 
     if (errors.length) {
-        return res.send({ errors })
+      return res.send({ errors })
     }
 
     req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });

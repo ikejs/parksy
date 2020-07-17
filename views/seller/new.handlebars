@@ -83,7 +83,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Spaces Available: <span class="text-danger">*</span></label>
-                                        <input name="lotSpaces" id="lotSpaces" type="number" class="form-control" placeholder="0">
+                                        <input name="numberOfSpaces" id="numberOfSpaces" type="number" class="form-control" placeholder="0">
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label" for="all">
@@ -105,13 +105,27 @@
                                             <input name="spacePrice" id="spacePrice" type="number" class="form-control" placeholder="0.00">
                                         </div> 
                                     </div>
-                                    <div class="col-md-4 hidden" id="spaceTimeLimit">
+                                    <div class="col-md-4" id="spaceTimeMinimum">
                                         <div class="form-group position-relative">
-                                            <label>Time Limit: <span class="text-danger">*</span></label>
+                                            <label>Time Minimum: </label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="phone" placeholder="0" />
+                                                <input type="text" class="form-control" id="spaceTimeMinimum" placeholder="0" />
                                                 <div class="input-group-append col-md-6 p-0">
-                                                    <select class="custom-select custom-select-lg btn btn-outline-secondary dropdown-toggle" name="lotSpaceTimeLimitType" id="lotSpaceTimeLimitType">
+                                                    <select class="custom-select custom-select-lg btn btn-outline-secondary dropdown-toggle" id="lotSpaceTimeMinimumType">
+                                                        <option value="hours" selected>hours</option>
+                                                        <option value="minutes">minutes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>                                                                               
+                                    </div>
+                                    <div class="col-md-4" id="spaceTimeLimit">
+                                        <div class="form-group position-relative">
+                                            <label>Time Limit: </label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="spaceTimeLimit" placeholder="0" />
+                                                <div class="input-group-append col-md-6 p-0">
+                                                    <select class="custom-select custom-select-lg btn btn-outline-secondary dropdown-toggle" id="lotSpaceTimeLimitType">
                                                         <option value="hours" selected>hours</option>
                                                         <option value="minutes">minutes</option>
                                                     </select>
@@ -126,38 +140,12 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Price</th>
-                                                <th scope="col">Time Limit<br>Per Customer</th>
-                                                <th scope="col">Date(s) Available</th>
-                                                <th scope="col">Start Time</th>
-                                                <th scope="col">End Time</th>
+                                                <th scope="col">Time Minimum</th>
+                                                <th scope="col">Time Limit</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th>1</th>
-                                                <td>
-                                                    <div class="input-group input-group-sm">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
-                                                        </div>
-                                                        <input type="text" class="form-control" aria-label="$" aria-describedby="inputGroup-sizing-sm" placeholder="0.00">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" id="phone" placeholder="0" />
-                                                        <div class="input-group-append input-group-sm col-md-6 p-0">
-                                                            <select class="custom-select custom-select-lg btn btn-outline-secondary btn-sm dropdown-toggle" name="lotSpaceTimeLimitType" id="lotSpaceTimeLimitType">
-                                                                <option value="hours" selected>hours</option>
-                                                                <option value="minutes">minutes</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>coming</td>
-                                                <td>soon</td>
-                                                <td>...</td>
-                                            </tr>
+                                        <tbody id="spacesTable">
+                                            {{!-- jQuery-filled spaces --}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -287,4 +275,5 @@
 <script src="../javascripts/moment.min.js"></script>
 <script src="../javascripts/tempusdominus-bootstrap-4.min.js"></script>
 <script src="../javascripts/new.js"></script>
+<script src="../javascripts/createSpaces.js"></script>
 <script src="../javascripts/createDates.js"></script>
